@@ -1,0 +1,862 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Job Platform API",
+    "version": "1.0.0",
+    "description": "API documentation for the Job Platform"
+  },
+  "paths": {
+    "/admins": {
+      "post": {
+        "summary": "Create Admin",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Admin"
+              },
+              "example": {
+                "email": "admin@example.com",
+                "password": "securepassword"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Admin created"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/admins/login": {
+      "post": {
+        "summary": "Admin Login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": ["email", "password"],
+                "example": {
+                  "email": "admin@example.com",
+                  "password": "securepassword"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Get All Users",
+        "responses": {
+          "200": {
+            "description": "List of users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                },
+                "example": [
+                  {
+                    "id": 1,
+                    "email": "user1@example.com",
+                    "password": "securepassword",
+                    "name": "User One",
+                    "phone_number": "123-456-7890",
+                    "address": "123 Main St",
+                    "date_of_birth": "1990-01-01",
+                    "experience": 3,
+                    "warnings": 0,
+                    "gender": "Male",
+                    "special_notes": "None",
+                    "join_date": "2023-01-01T00:00:00.000Z",
+                    "device_token": "device_token_example",
+                    "is_approved": true,
+                    "is_dormant": false,
+                    "last_login": "2023-04-01T00:00:00.000Z",
+                    "created_at": "2023-01-01T00:00:00.000Z",
+                    "updated_at": "2023-04-01T00:00:00.000Z"
+                  },
+                  {
+                    "id": 2,
+                    "email": "user2@example.com",
+                    "password": "securepassword",
+                    "name": "User Two",
+                    "phone_number": "123-456-7891",
+                    "address": "456 Main St",
+                    "date_of_birth": "1991-02-01",
+                    "experience": 1,
+                    "warnings": 1,
+                    "gender": "Female",
+                    "special_notes": "None",
+                    "join_date": "2023-02-01T00:00:00.000Z",
+                    "device_token": "device_token_example",
+                    "is_approved": false,
+                    "is_dormant": true,
+                    "last_login": "2023-05-01T00:00:00.000Z",
+                    "created_at": "2023-02-01T00:00:00.000Z",
+                    "updated_at": "2023-05-01T00:00:00.000Z"
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Error fetching users"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Get User by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                },
+                "example": {
+                  "id": 1,
+                  "email": "user1@example.com",
+                  "password": "securepassword",
+                  "name": "User One",
+                  "phone_number": "123-456-7890",
+                  "address": "123 Main St",
+                  "date_of_birth": "1990-01-01",
+                  "experience": 3,
+                  "warnings": 0,
+                  "gender": "Male",
+                  "special_notes": "None",
+                  "join_date": "2023-01-01T00:00:00.000Z",
+                  "device_token": "device_token_example",
+                  "is_approved": true,
+                  "is_dormant": false,
+                  "last_login": "2023-04-01T00:00:00.000Z",
+                  "created_at": "2023-01-01T00:00:00.000Z",
+                  "updated_at": "2023-04-01T00:00:00.000Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error fetching user"
+          }
+        }
+      }
+    },
+    "/users/{id}/approve": {
+      "put": {
+        "summary": "Approve User",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "is_approved": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["is_approved"],
+                "example": {
+                  "is_approved": true
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User approved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                },
+                "example": {
+                  "id": 1,
+                  "email": "user1@example.com",
+                  "password": "securepassword",
+                  "name": "User One",
+                  "phone_number": "123-456-7890",
+                  "address": "123 Main St",
+                  "date_of_birth": "1990-01-01",
+                  "experience": 3,
+                  "warnings": 0,
+                  "gender": "Male",
+                  "special_notes": "None",
+                  "join_date": "2023-01-01T00:00:00.000Z",
+                  "device_token": "device_token_example",
+                  "is_approved": true,
+                  "is_dormant": false,
+                  "last_login": "2023-04-01T00:00:00.000Z",
+                  "created_at": "2023-01-01T00:00:00.000Z",
+                  "updated_at": "2023-04-01T00:00:00.000Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error updating user"
+          }
+        }
+      }
+    },
+    "/users/{id}/dormant": {
+      "put": {
+        "summary": "Set User as Dormant",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User set as dormant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                },
+                "example": {
+                  "id": 1,
+                  "email": "user1@example.com",
+                  "password": "securepassword",
+                  "name": "User One",
+                  "phone_number": "123-456-7890",
+                  "address": "123 Main St",
+                  "date_of_birth": "1990-01-01",
+                  "experience": 3,
+                  "warnings": 0,
+                  "gender": "Male",
+                  "special_notes": "None",
+                  "join_date": "2023-01-01T00:00:00.000Z",
+                  "device_token": "device_token_example",
+                  "is_approved": true,
+                  "is_dormant": true,
+                  "last_login": "2023-04-01T00:00:00.000Z",
+                  "created_at": "2023-01-01T00:00:00.000Z",
+                  "updated_at": "2023-04-01T00:00:00.000Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error updating user"
+          }
+        }
+      }
+    },
+    "/platforms": {
+      "post": {
+        "summary": "Create Platform",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Platform"
+              },
+              "example": {
+                "name": "Online Platform"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Platform created"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get All Platforms",
+        "responses": {
+          "200": {
+            "description": "List of platforms",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Platform"
+                  }
+                },
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Online Platform"
+                  },
+                  {
+                    "id": 2,
+                    "name": "Offline Platform"
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Error fetching platforms"
+          }
+        }
+      }
+    },
+    "/job-posts": {
+      "post": {
+        "summary": "Create Job Post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JobPost"
+              },
+              "example": {
+                "admin_id": 1,
+                "platform_id": 1,
+                "title": "Part-Time Job",
+                "description": "A part-time job description",
+                "details": "Detailed job information",
+                "dress_code": "Casual",
+                "type": "Offline",
+                "post_duration": "1 month",
+                "post_sDate": "2023-04-01T00:00:00.000Z",
+                "post_eDate": "2023-04-01T00:00:00.000Z",
+                "lunch_sDate": "2023-04-01T00:00:00.000Z",
+                "lunch_eDate": "2023-04-01T00:00:00.000Z",
+                "lunch_break": "1 hour",
+                "max_applicants": 5,
+                "location": "123 Main St",
+                "wage": 40000
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Job post created"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get All Job Posts",
+        "responses": {
+          "200": {
+            "description": "List of job posts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/JobPost"
+                  }
+                },
+                "example": [
+                  {
+                    "id": 1,
+                    "admin_id": 1,
+                    "platform_id": 1,
+                    "title": "Part-Time Job",
+                    "description": "A part-time job description",
+                    "details": "Detailed job information",
+                    "dress_code": "Casual",
+                    "type": "Offline",
+                    "post_duration": "1 month",
+                    "lunch_break": "1 hour",
+                    "max_applicants": 5,
+                    "location": "123 Main St",
+                    "wage": "15 USD/hour",
+                    "created_at": "2023-01-01T00:00:00.000Z",
+                    "updated_at": "2023-01-01T00:00:00.000Z"
+                  },
+                  {
+                    "id": 2,
+                    "admin_id": 2,
+                    "platform_id": 2,
+                    "title": "Full-Time Job",
+                    "description": "A full-time job description",
+                    "details": "Detailed job information",
+                    "dress_code": "Formal",
+                    "type": "Online",
+                    "post_duration": "3 months",
+                    "lunch_break": "30 minutes",
+                    "max_applicants": 3,
+                    "location": "456 Main St",
+                    "wage": "20 USD/hour",
+                    "created_at": "2023-02-01T00:00:00.000Z",
+                    "updated_at": "2023-02-01T00:00:00.000Z"
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Error fetching job posts"
+          }
+        }
+      }
+    },
+    "/job-posts/{id}": {
+      "get": {
+        "summary": "Get Job Post by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Job post data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobPost"
+                },
+                "example": {
+                  "id": 1,
+                  "admin_id": 1,
+                  "platform_id": 1,
+                  "title": "Part-Time Job",
+                  "description": "A part-time job description",
+                  "details": "Detailed job information",
+                  "dress_code": "Casual",
+                  "type": "Offline",
+                  "post_duration": "1 month",
+                  "lunch_break": "1 hour",
+                  "max_applicants": 5,
+                  "location": "123 Main St",
+                  "wage": "15 USD/hour",
+                  "created_at": "2023-01-01T00:00:00.000Z",
+                  "updated_at": "2023-01-01T00:00:00.000Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error fetching job post"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update Job Post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JobPost"
+              },
+              "example": {
+                "platform_id": 2,
+                "title": "Updated Part-Time Job",
+                "description": "An updated part-time job description",
+                "details": "Updated detailed job information",
+                "dress_code": "Business Casual",
+                "type": "Online",
+                "post_duration": "2 months",
+                "lunch_break": "45 minutes",
+                "max_applicants": 10,
+                "location": "789 Main St",
+                "wage": "18 USD/hour"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Job post updated"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Job Post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Job post deleted"
+          },
+          "400": {
+            "description": "Error deleting job post"
+          }
+        }
+      }
+    },
+    "/applications": {
+      "post": {
+        "summary": "Create Application",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Application"
+              },
+              "example": {
+                "user_id": 1,
+                "job_post_id": 1
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Application created"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/applications/{id}": {
+      "put": {
+        "summary": "Update Application Status",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": ["Pending", "Approved", "Rejected"]
+                  }
+                },
+                "required": ["status"],
+                "example": {
+                  "status": "Approved"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Application status updated"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/applications/user/{user_id}": {
+      "get": {
+        "summary": "Get Applications by User ID",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of applications",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Application"
+                  }
+                },
+                "example": [
+                  {
+                    "id": 1,
+                    "user_id": 1,
+                    "job_post_id": 1,
+                    "created_at": "2023-01-01T00:00:00.000Z",
+                    "status": "Pending"
+                  },
+                  {
+                    "id": 2,
+                    "user_id": 1,
+                    "job_post_id": 2,
+                    "created_at": "2023-01-02T00:00:00.000Z",
+                    "status": "Approved"
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Error fetching applications"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Admin": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": ["email", "password"],
+        "example": {
+          "email": "admin@example.com",
+          "password": "securepassword"
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "phone_number": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "date_of_birth": {
+            "type": "string",
+            "format": "date"
+          },
+          "experience": {
+            "type": "integer"
+          },
+          "warnings": {
+            "type": "integer"
+          },
+          "gender": {
+            "type": "string",
+            "enum": ["Male", "Female", "Other"]
+          },
+          "special_notes": {
+            "type": "string"
+          },
+          "device_token": {
+            "type": "string"
+          },
+          "is_approved": {
+            "type": "boolean"
+          },
+          "is_dormant": {
+            "type": "boolean"
+          },
+          "last_login": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": ["email", "password"],
+        "example": {
+          "email": "user@example.com",
+          "password": "securepassword",
+          "name": "User One",
+          "phone_number": "123-456-7890",
+          "address": "123 Main St",
+          "date_of_birth": "1990-01-01",
+          "experience": 3,
+          "warnings": 0,
+          "gender": "Male",
+          "special_notes": "None",
+          "device_token": "device_token_example",
+          "is_approved": true,
+          "is_dormant": false,
+          "last_login": "2023-04-01T00:00:00.000Z"
+        }
+      },
+      "Platform": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": ["name"],
+        "example": {
+          "name": "Online Platform"
+        }
+      },
+      "JobPost": {
+        "type": "object",
+        "properties": {
+          "admin_id": {
+            "type": "integer"
+          },
+          "platform_id": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "details": {
+            "type": "string"
+          },
+          "dress_code": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["Offline", "Online"]
+          },
+          "post_duration": {
+            "type": "string"
+          },
+          "lunch_break": {
+            "type": "string"
+          },
+          "max_applicants": {
+            "type": "integer"
+          },
+          "location": {
+            "type": "string"
+          },
+          "wage": {
+            "type": "string"
+          }
+        },
+        "required": ["admin_id", "platform_id", "title", "type"],
+        "example": {
+          "admin_id": 1,
+          "platform_id": 1,
+          "title": "Part-Time Job",
+          "description": "A part-time job description",
+          "details": "Detailed job information",
+          "dress_code": "Casual",
+          "type": "Offline",
+          "post_duration": "1 month",
+          "lunch_break": "1 hour",
+          "max_applicants": 5,
+          "location": "123 Main St",
+          "wage": "15 USD/hour"
+        }
+      },
+      "Application": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "integer"
+          },
+          "job_post_id": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["Pending", "Approved", "Rejected"]
+          }
+        },
+        "required": ["user_id", "job_post_id"],
+        "example": {
+          "user_id": 1,
+          "job_post_id": 1,
+          "status": "Pending"
+        }
+      }
+    }
+  }
+}
